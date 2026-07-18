@@ -9,4 +9,4 @@ description = "Flask portfolio app for Vercel deployment"
 requires-python = ">=3.10"
 
 [tool.vercel]
-entrypoint = "app:app"
+entrypoint = "main:app"
