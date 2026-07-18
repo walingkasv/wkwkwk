@@ -3,6 +3,8 @@ from __future__ import annotations
 import logging
 import secrets
 
+logging.basicConfig(level=logging.INFO)
+
 from flask import Flask, abort, request, session
 from werkzeug.security import generate_password_hash
 
@@ -16,6 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 def create_app(config_object=Config):
+    logger.info("Starting Flask app initialization")
     app = Flask(__name__, template_folder="Frontend", static_folder="Frontend")
     app.config.from_object(config_object)
     app.config.update(
@@ -41,9 +44,11 @@ def create_app(config_object=Config):
     def inject_globals():
         return {"csrf_token": session.get("csrf_token", "")}
 
+    app.logger.info("Blueprints registered; preparing database initialization")
     with app.app_context():
         initialize_database(app)
 
+    app.logger.info("Flask app initialization completed")
     return app
 
 
@@ -55,44 +60,49 @@ def initialize_database(app: Flask) -> None:
         if app.config["DB_DRIVER"] != "sqlite":
             required_keys = ("DB_HOST", "DB_USER", "DB_PASSWORD", "DB_NAME")
             if not all(app.config.get(key) for key in required_keys):
-                logger.info("Skipping database initialization because TiDB/MySQL env vars are incomplete.")
+                app.logger.info("Skipping database initialization because TiDB/MySQL env vars are incomplete.")
                 return
 
         db.executescript(schema_statements(app.config["DB_DRIVER"]))
         seed_admin_and_profile(app)
+        app.logger.info("Database initialization completed")
     except Exception as exc:  # pragma: no cover - defensive for deployment/import safety
-        logger.warning("Database initialization skipped during import/startup: %s", exc)
+        app.logger.exception("Database initialization skipped during import/startup")
+        logger.debug("Database init exception: %s", exc)
 
 
 def seed_admin_and_profile(app: Flask) -> None:
     username = app.config["ADMIN_USERNAME"]
-    user = db.fetch_one("SELECT * FROM users WHERE role = 'admin' ORDER BY id ASC LIMIT 1")
-    if not user:
-        user_id = db.execute(
-            "INSERT INTO users (username, password_hash, role) VALUES (?, ?, 'admin')",
-            (username, generate_password_hash(app.config["ADMIN_PASSWORD"])),
-        )
-    else:
-        user_id = user["id"]
+    try:
+        user = db.fetch_one("SELECT * FROM users WHERE role = 'admin' ORDER BY id ASC LIMIT 1")
+        if not user:
+            user_id = db.execute(
+                "INSERT INTO users (username, password_hash, role) VALUES (?, ?, 'admin')",
+                (username, generate_password_hash(app.config["ADMIN_PASSWORD"])),
+            )
+        else:
+            user_id = user["id"]
 
-    profile = db.fetch_one("SELECT id FROM profiles WHERE user_id = ?", (user_id,))
-    if not profile:
-        db.execute(
-            """
-            INSERT INTO profiles (
-                user_id, nama_lengkap, nama_panggilan, universitas, prodi, semester, alamat
-            ) VALUES (?, ?, ?, ?, ?, ?, ?)
-            """,
-            (
-                user_id,
-                "Vanessa Ruth Walingkas",
-                "Vanessa",
-                "Isi nama universitas melalui halaman Admin",
-                "Sistem Informasi",
-                "Isi semester",
-                "Isi alamat dan deskripsi singkat melalui halaman Admin.",
-            ),
-        )
+        profile = db.fetch_one("SELECT id FROM profiles WHERE user_id = ?", (user_id,))
+        if not profile:
+            db.execute(
+                """
+                INSERT INTO profiles (
+                    user_id, nama_lengkap, nama_panggilan, universitas, prodi, semester, alamat
+                ) VALUES (?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    user_id,
+                    "Vanessa Ruth Walingkas",
+                    "Vanessa",
+                    "Isi nama universitas melalui halaman Admin",
+                    "Sistem Informasi",
+                    "Isi semester",
+                    "Isi alamat dan deskripsi singkat melalui halaman Admin.",
+                ),
+            )
+    except Exception:
+        app.logger.exception("Admin seeding failed")
 
 
 app = create_app()
