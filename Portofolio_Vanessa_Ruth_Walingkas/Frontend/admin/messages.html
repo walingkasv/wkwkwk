@@ -1,0 +1,7 @@
+{% extends 'admin/base.html' %}
+{% block title %}Pesan{% endblock %}
+{% block heading %}Pesan Kontak{% endblock %}
+{% block content %}
+<div class="panel"><div class="panel-head"><div><span class="eyebrow">INBOX</span><h3>Pesan dari pengunjung</h3></div></div>
+<div class="message-list">{% for item in items %}<article class="message-card {{ 'unread' if item.status == 'baru' }}"><div class="message-meta"><div><span class="badge {{ item.status }}">{{ item.status }}</span><h4>{{ item.subjek or 'Tanpa subjek' }}</h4><p>{{ item.nama }} · <a href="mailto:{{ item.email }}">{{ item.email }}</a></p></div><small>{{ item.created_at }}</small></div><p class="message-body">{{ item.pesan }}</p><div class="item-actions"><form method="post" action="{{ url_for('admin.toggle_message', item_id=item.id) }}"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button>{{ 'Tandai dibaca' if item.status == 'baru' else 'Tandai baru' }}</button></form><form method="post" action="{{ url_for('admin.delete_message', item_id=item.id) }}" data-confirm="Hapus pesan ini?"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button>Hapus</button></form></div></article>{% else %}<div class="empty-state"><strong>Belum ada pesan.</strong><p>Pesan dari formulir kontak akan tampil di sini.</p></div>{% endfor %}</div></div>
+{% endblock %}

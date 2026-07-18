@@ -1,0 +1,35 @@
+{% extends 'admin/base.html' %}
+{% block title %}Profil{% endblock %}
+{% block heading %}Profil{% endblock %}
+{% block content %}
+<div class="two-column">
+<form class="panel form-panel" method="post" enctype="multipart/form-data">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+  <div class="panel-head"><div><span class="eyebrow">DATA UTAMA</span><h3>Edit profil Vanessa</h3></div></div>
+  <div class="form-grid">
+    <label>Nama lengkap *<input name="nama_lengkap" required value="{{ profile.nama_lengkap or '' }}"></label>
+    <label>Nama panggilan<input name="nama_panggilan" value="{{ profile.nama_panggilan or '' }}"></label>
+    <label>Tempat lahir<input name="tempat_lahir" value="{{ profile.tempat_lahir or '' }}"></label>
+    <label>Tanggal lahir<input type="date" name="tanggal_lahir" value="{{ profile.tanggal_lahir or '' }}"></label>
+    <label>Email<input type="email" name="email" value="{{ profile.email or '' }}"></label>
+    <label>Telepon<input name="telepon" value="{{ profile.telepon or '' }}"></label>
+    <label>Universitas<input name="universitas" value="{{ profile.universitas or '' }}"></label>
+    <label>Fakultas<input name="fakultas" value="{{ profile.fakultas or '' }}"></label>
+    <label>Program studi<input name="prodi" value="{{ profile.prodi or '' }}"></label>
+    <label>Semester<input name="semester" value="{{ profile.semester or '' }}"></label>
+    <label class="full">Alamat / ringkasan diri<textarea name="alamat" rows="5">{{ profile.alamat or '' }}</textarea></label>
+    <label class="full">URL foto saat ini<input type="url" name="foto_url" value="{{ profile.foto_url or '' }}" placeholder="https://res.cloudinary.com/..."></label>
+    <label class="full upload-box">Upload foto ke Cloudinary<input type="file" name="foto" accept=".jpg,.jpeg,.png,.webp"><small>Maksimal 5 MB. Kosongkan bila tidak diubah.</small></label>
+  </div>
+  <button class="button primary" type="submit">Simpan Profil</button>
+</form>
+<div class="panel preview-panel">
+  <span class="eyebrow">PREVIEW PROFIL</span>
+  {% if profile.foto_url %}<img src="{{ profile.foto_url }}" alt="Foto Vanessa">{% else %}<div class="photo-placeholder">VW</div>{% endif %}
+  <div class="preview-identity">
+    <h3>{{ profile.nama_lengkap }}</h3>
+    <p>{{ profile.prodi }}</p>
+  </div>
+</div>
+</div>
+{% endblock %}

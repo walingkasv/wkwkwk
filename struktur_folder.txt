@@ -1,0 +1,28 @@
+Portofolio_Vanessa_Ruth_Walingkas/
+├── Backend/
+│   ├── admin/routes.py
+│   ├── api/routes.py
+│   ├── public/routes.py
+│   ├── services/cloudinary_service.py
+│   ├── services/email_service.py
+│   ├── auth.py
+│   ├── database.py
+│   └── repositories.py
+├── Frontend/
+│   ├── admin/
+│   │   ├── css/admin.css
+│   │   ├── js/admin.js
+│   │   └── *.html
+│   └── utama/
+│       ├── css/style.css
+│       ├── js/script.js
+│       └── index.html
+├── screenshots/
+├── .env.example
+├── .gitignore
+├── app.py
+├── config.py
+├── DB_NIM_VANESSA_RUTH_WALINGKAS.sql
+├── README.md
+├── requirements.txt
+└── struktur_folder.txt

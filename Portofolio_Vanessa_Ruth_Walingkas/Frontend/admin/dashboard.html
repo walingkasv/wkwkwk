@@ -1,0 +1,20 @@
+{% extends 'admin/base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block heading %}Dashboard{% endblock %}
+{% block content %}
+<div class="stats-grid">
+  <a class="stat-card" href="{{ url_for('admin.skills') }}"><span>SKILLS</span><strong>{{ counts.skills }}</strong><small>Data keahlian</small></a>
+  <a class="stat-card" href="{{ url_for('admin.experiences') }}"><span>PENGALAMAN</span><strong>{{ counts.experiences }}</strong><small>Riwayat aktivitas</small></a>
+  <a class="stat-card" href="{{ url_for('admin.projects') }}"><span>PROYEK</span><strong>{{ counts.projects }}</strong><small>Karya portofolio</small></a>
+  <a class="stat-card" href="{{ url_for('admin.messages') }}"><span>PESAN BARU</span><strong>{{ counts.messages }}</strong><small>Dari pengunjung</small></a>
+</div>
+<div class="panel">
+  <div class="panel-head"><div><span class="eyebrow">TERBARU</span><h3>Pesan masuk</h3></div><a href="{{ url_for('admin.messages') }}">Lihat semua</a></div>
+  <div class="table-wrap">
+    <table><thead><tr><th>Nama</th><th>Email</th><th>Pesan</th><th>Status</th></tr></thead><tbody>
+    {% for item in recent_messages %}<tr><td>{{ item.nama }}</td><td>{{ item.email }}</td><td>{{ item.pesan[:70] }}{% if item.pesan|length > 70 %}…{% endif %}</td><td><span class="badge {{ item.status }}">{{ item.status }}</span></td></tr>
+    {% else %}<tr><td colspan="4" class="empty-cell">Belum ada pesan.</td></tr>{% endfor %}
+    </tbody></table>
+  </div>
+</div>
+{% endblock %}

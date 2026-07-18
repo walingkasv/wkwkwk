@@ -1,0 +1,19 @@
+{% extends 'admin/base.html' %}
+{% block title %}Proyek{% endblock %}
+{% block heading %}Proyek{% endblock %}
+{% block content %}
+<div class="crud-layout">
+<form class="panel form-panel compact" method="post" enctype="multipart/form-data">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}"><input type="hidden" name="id" value="{{ edit_item.id if edit_item else '' }}">
+  <span class="eyebrow">{{ 'EDIT' if edit_item else 'TAMBAH' }}</span><h3>Data proyek</h3>
+  <label>Judul proyek *<input name="judul" required value="{{ edit_item.judul if edit_item else '' }}"></label>
+  <label>Deskripsi<textarea name="deskripsi" rows="5">{{ edit_item.deskripsi if edit_item else '' }}</textarea></label>
+  <label>Link proyek<input type="url" name="link_project" value="{{ edit_item.link_project if edit_item else '' }}" placeholder="https://github.com/..."></label>
+  <label>URL gambar<input type="url" name="gambar_url" value="{{ edit_item.gambar_url if edit_item else '' }}" placeholder="https://res.cloudinary.com/..."></label>
+  <label class="upload-box">Upload ke Cloudinary<input type="file" name="gambar" accept=".jpg,.jpeg,.png,.webp"><small>Maksimal 5 MB.</small></label>
+  <div class="form-actions"><button class="button primary">Simpan</button>{% if edit_item %}<a class="button ghost" href="{{ url_for('admin.projects') }}">Batal</a>{% endif %}</div>
+</form>
+<div class="panel"><div class="panel-head"><div><span class="eyebrow">GALERI</span><h3>Proyek Vanessa</h3></div></div>
+<div class="project-admin-grid">{% for item in items %}<article class="project-admin-card">{% if item.gambar_url %}<img src="{{ item.gambar_url }}" alt="{{ item.judul }}">{% else %}<div class="image-placeholder">PROJECT</div>{% endif %}<div><h4>{{ item.judul }}</h4><p>{{ item.deskripsi }}</p><div class="item-actions"><a href="?edit={{ item.id }}">Edit</a><form method="post" action="{{ url_for('admin.delete_project', item_id=item.id) }}" data-confirm="Hapus proyek ini?"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button>Hapus</button></form></div></div></article>{% else %}<div class="empty-state"><strong>Belum ada proyek.</strong><p>Upload gambar proyek melalui Cloudinary dari formulir ini.</p></div>{% endfor %}</div>
+</div></div>
+{% endblock %}

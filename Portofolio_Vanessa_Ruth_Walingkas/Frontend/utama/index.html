@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Portofolio Vanessa Ruth Walingkas, mahasiswa Sistem Informasi.">
+  <title>Vanessa Ruth Walingkas | Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='utama/css/style.css') }}">
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <a class="logo" href="#home"><span>V</span>Vanessa.</a>
+  <button class="nav-toggle" id="navToggle" aria-label="Buka menu">☰</button>
+  <div class="nav-links" id="navLinks"><a href="#about">Tentang</a><a href="#skills">Skill</a><a href="#experience">Pengalaman</a><a href="#projects">Proyek</a><a href="#contact">Kontak</a><a class="admin-link" href="{{ url_for('admin.login') }}">Admin</a></div>
+</nav>
+<header class="hero" id="home">
+  <div class="hero-copy"><span class="kicker">INFORMATION SYSTEMS STUDENT</span><h1>Hi, I’m <em id="heroName">Vanessa</em>.</h1><p id="heroSummary">Memuat data profil...</p><div class="hero-actions"><a class="btn primary" href="#projects">Lihat Proyek</a><a class="btn text" href="#contact">Hubungi Saya →</a></div></div>
+  <div class="hero-visual"><div class="portrait-frame"><div class="portrait-placeholder" id="portraitPlaceholder">VW</div><img id="portrait" alt="Foto Vanessa Ruth Walingkas"></div><div class="floating-card"><small>PROGRAM STUDI</small><strong id="heroStudy">Sistem Informasi</strong></div></div>
+</header>
+<main>
+<section class="section about" id="about"><div class="section-label">01 / TENTANG</div><div class="about-grid"><div><h2>Building a future through technology and curiosity.</h2></div><div class="about-details"><p id="aboutText">Data profil akan tampil secara dinamis dari database.</p><div class="facts"><div><small>Nama</small><strong id="factName">Vanessa Ruth Walingkas</strong></div><div><small>Universitas</small><strong id="factUniversity">—</strong></div><div><small>Semester</small><strong id="factSemester">—</strong></div><div><small>Email</small><strong id="factEmail">—</strong></div></div></div></div></section>
+<section class="section soft" id="skills"><div class="section-heading"><div><div class="section-label">02 / SKILLS</div><h2>Tools & abilities</h2></div></div><div class="skill-grid" id="skillsGrid"><div class="empty-public">Memuat skill...</div></div></section>
+<section class="section" id="experience"><div class="section-heading"><div><div class="section-label">03 / EXPERIENCE</div><h2>Learning through every role</h2></div></div><div class="timeline" id="experienceList"><div class="empty-public">Memuat pengalaman...</div></div></section>
+<section class="section dark" id="projects"><div class="section-heading"><div><div class="section-label light">04 / SELECTED WORK</div><h2>Projects that reflect my journey.</h2></div></div><div class="project-grid" id="projectGrid"><div class="empty-public dark-empty">Memuat proyek...</div></div></section>
+<section class="section contact" id="contact"><div class="contact-copy"><div class="section-label">05 / CONTACT</div><h2>Let’s create something meaningful together.</h2><p>Kirim pesan melalui formulir. Data disimpan ke database.</p><a id="contactEmail" href="#">Email belum diisi</a></div><form class="contact-form" id="contactForm"><input type="text" name="website" tabindex="-1" autocomplete="off" class="honeypot"><label>Nama<input name="name" required maxlength="100" placeholder="Nama lengkap"></label><label>Email<input type="email" name="email" required maxlength="100" placeholder="email@example.com"></label><label>Subjek<input name="subject" maxlength="150" placeholder="Topik pesan"></label><label>Pesan<textarea name="message" rows="5" required maxlength="4000" placeholder="Tulis pesanmu..."></textarea></label><button class="btn primary" id="submitButton" type="submit">Kirim Pesan</button><p class="form-status" id="formStatus"></p></form></section>
+</main>
+<footer><a class="logo" href="#home"><span>V</span>Vanessa.</a><p>© <span id="year"></span> Vanessa Ruth Walingkas. Built with Flask.</p><a href="#home">Kembali ke atas ↑</a></footer>
+<script src="{{ url_for('static', filename='utama/js/script.js') }}"></script>
+</body>
+</html>

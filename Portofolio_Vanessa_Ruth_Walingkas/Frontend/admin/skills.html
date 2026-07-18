@@ -1,0 +1,16 @@
+{% extends 'admin/base.html' %}
+{% block title %}Skills{% endblock %}
+{% block heading %}Skills{% endblock %}
+{% block content %}
+<div class="crud-layout">
+<form class="panel form-panel compact" method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}"><input type="hidden" name="id" value="{{ edit_item.id if edit_item else '' }}">
+  <span class="eyebrow">{{ 'EDIT' if edit_item else 'TAMBAH' }} SKILL</span><h3>{{ 'Perbarui skill' if edit_item else 'Skill dapat diisi nanti' }}</h3>
+  <label>Nama skill *<input name="nama_skill" required value="{{ edit_item.nama_skill if edit_item else '' }}" placeholder="Contoh: Python"></label>
+  <label>Icon class<input name="icon_class" value="{{ edit_item.icon_class if edit_item else '' }}" placeholder="Contoh: fa-brands fa-python"></label>
+  <div class="form-actions"><button class="button primary" type="submit">Simpan</button>{% if edit_item %}<a class="button ghost" href="{{ url_for('admin.skills') }}">Batal</a>{% endif %}</div>
+</form>
+<div class="panel"><div class="panel-head"><div><span class="eyebrow">DAFTAR</span><h3>Skill Vanessa</h3></div></div>
+<div class="card-list">{% for item in items %}<article class="item-card"><div class="item-icon">{{ item.nama_skill[:1] }}</div><div><h4>{{ item.nama_skill }}</h4><p>{{ item.icon_class or 'Tanpa icon class' }}</p></div><div class="item-actions"><a href="?edit={{ item.id }}">Edit</a><form method="post" action="{{ url_for('admin.delete_skill', item_id=item.id) }}" data-confirm="Hapus skill ini?"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button>Hapus</button></form></div></article>{% else %}<div class="empty-state"><strong>Belum ada skill.</strong><p>Backend CRUD sudah siap. Tambahkan ketika datanya tersedia.</p></div>{% endfor %}</div>
+</div></div>
+{% endblock %}

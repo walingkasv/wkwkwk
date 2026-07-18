@@ -1,0 +1,18 @@
+{% extends 'admin/base.html' %}
+{% block title %}Pengalaman{% endblock %}
+{% block heading %}Pengalaman{% endblock %}
+{% block content %}
+<div class="crud-layout">
+<form class="panel form-panel compact" method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}"><input type="hidden" name="id" value="{{ edit_item.id if edit_item else '' }}">
+  <span class="eyebrow">{{ 'EDIT' if edit_item else 'TAMBAH' }}</span><h3>Data pengalaman</h3>
+  <label>Posisi *<input name="posisi" required value="{{ edit_item.posisi if edit_item else '' }}" placeholder="Contoh: Anggota Divisi IT"></label>
+  <label>Perusahaan/organisasi<input name="perusahaan" value="{{ edit_item.perusahaan if edit_item else '' }}" placeholder="Nama instansi"></label>
+  <label>Durasi<input name="durasi" value="{{ edit_item.durasi if edit_item else '' }}" placeholder="Jan 2025 – Jun 2025"></label>
+  <label>Deskripsi<textarea name="deskripsi" rows="5" placeholder="Jelaskan tanggung jawab dan hasil.">{{ edit_item.deskripsi if edit_item else '' }}</textarea></label>
+  <div class="form-actions"><button class="button primary">Simpan</button>{% if edit_item %}<a class="button ghost" href="{{ url_for('admin.experiences') }}">Batal</a>{% endif %}</div>
+</form>
+<div class="panel"><div class="panel-head"><div><span class="eyebrow">RIWAYAT</span><h3>Pengalaman Vanessa</h3></div></div>
+<div class="card-list">{% for item in items %}<article class="item-card wide"><div><small>{{ item.durasi or 'Durasi belum diisi' }}</small><h4>{{ item.posisi }}</h4><p class="muted-strong">{{ item.perusahaan }}</p><p>{{ item.deskripsi }}</p></div><div class="item-actions"><a href="?edit={{ item.id }}">Edit</a><form method="post" action="{{ url_for('admin.delete_experience', item_id=item.id) }}" data-confirm="Hapus pengalaman ini?"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button>Hapus</button></form></div></article>{% else %}<div class="empty-state"><strong>Belum ada pengalaman.</strong><p>Tambahkan pengalaman organisasi, kerja, atau kepanitiaan.</p></div>{% endfor %}</div>
+</div></div>
+{% endblock %}

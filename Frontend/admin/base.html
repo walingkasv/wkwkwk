@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Admin{% endblock %} | Vanessa Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/admin.css') }}">
+</head>
+<body>
+<div class="admin-shell">
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="{{ url_for('admin.dashboard') }}"><span>V</span><strong>Vanessa.</strong></a>
+    <nav>
+      <a class="{{ 'active' if request.endpoint == 'admin.dashboard' }}" href="{{ url_for('admin.dashboard') }}">Dashboard</a>
+      <a class="{{ 'active' if request.endpoint == 'admin.profile' }}" href="{{ url_for('admin.profile') }}">Profil</a>
+      <a class="{{ 'active' if request.endpoint == 'admin.skills' }}" href="{{ url_for('admin.skills') }}">Skills</a>
+      <a class="{{ 'active' if request.endpoint == 'admin.experiences' }}" href="{{ url_for('admin.experiences') }}">Pengalaman</a>
+      <a class="{{ 'active' if request.endpoint == 'admin.projects' }}" href="{{ url_for('admin.projects') }}">Proyek</a>
+      <a class="{{ 'active' if request.endpoint == 'admin.messages' }}" href="{{ url_for('admin.messages') }}">Pesan</a>
+      <a class="{{ 'active' if request.endpoint == 'admin.account' }}" href="{{ url_for('admin.account') }}">Akun</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="{{ url_for('public.home') }}" target="_blank">Lihat Website ↗</a>
+      <form method="post" action="{{ url_for('admin.logout') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <button type="submit">Logout</button>
+      </form>
+    </div>
+  </aside>
+  <main class="main">
+    <header class="topbar">
+      <button class="menu-button" id="menuButton" aria-label="Buka menu">☰</button>
+      <div>
+        <small>ADMIN PORTFOLIO</small>
+        <h1>{% block heading %}Dashboard{% endblock %}</h1>
+      </div>
+      <div class="avatar">VW</div>
+    </header>
+    <section class="content">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+          <div class="alert {{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </section>
+  </main>
+</div>
+<script src="{{ url_for('static', filename='admin/js/admin.js') }}"></script>
+</body>
+</html>

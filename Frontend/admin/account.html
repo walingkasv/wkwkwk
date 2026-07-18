@@ -1,0 +1,15 @@
+{% extends 'admin/base.html' %}
+{% block title %}Akun{% endblock %}
+{% block heading %}Akun Admin{% endblock %}
+{% block content %}
+<form class="panel form-panel account-form" method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+  <span class="eyebrow">KEAMANAN</span><h3>Ubah akun administrator</h3>
+  <label>Username<input name="username" required value="{{ user.username }}"></label>
+  <hr>
+  <p class="form-note">Kosongkan kolom password bila hanya ingin mengubah username.</p>
+  <label>Password lama<input type="password" name="old_password" autocomplete="current-password"></label>
+  <label>Password baru<input type="password" name="new_password" minlength="6" autocomplete="new-password"></label>
+  <button class="button primary">Simpan Perubahan</button>
+</form>
+{% endblock %}
